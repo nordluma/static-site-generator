@@ -39,4 +39,6 @@ class TestHtmlNode(unittest.TestCase):
         ]
 
         for value, expected in test_cases:
-            self.assertEqual(value.props_to_html(), expected)
+            with self.subTest(value):
+                self.assertEqual(value.props_to_html(), expected)
+
