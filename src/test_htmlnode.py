@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HtmlNode
+from htmlnode import HtmlNode, LeafNode
 
 
 class TestHtmlNode(unittest.TestCase):
@@ -42,3 +42,18 @@ class TestHtmlNode(unittest.TestCase):
             with self.subTest(value):
                 self.assertEqual(value.props_to_html(), expected)
 
+
+class TestLeafNode(unittest.TestCase):
+    def creates_a_leaf_tag_with_props(self):
+        leaf_node = LeafNode("a", "take action", {"href": "not.phishing.com"})
+        self.assertEqual(
+            leaf_node.to_html(), "<a href=not.phishing.com>take action</a>"
+        )
+
+    def creates_a_leaf_tag_without_props(self):
+        leaf_node = LeafNode("h1", "hello")
+        self.assertEqual(leaf_node.to_html(), "<h1>hello</h1>")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
