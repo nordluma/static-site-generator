@@ -54,6 +54,10 @@ class TestLeafNode(unittest.TestCase):
         leaf_node = LeafNode("h1", "hello")
         self.assertEqual(leaf_node.to_html(), "<h1>hello</h1>")
 
+    def create_leaf_node_without_a_tag(self):
+        leaf_node = LeafNode(None, "some value", None)
+        self.assertEqual(leaf_node.to_html(), "some value")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
