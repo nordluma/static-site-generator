@@ -3,7 +3,7 @@ class HtmlNode:
         self,
         tag: str | None = None,
         value: str | None = None,
-        children=None,
+        children: list[object] | None = None,
         props: dict[str, str] | None = None,
     ):
         self.tag = tag
@@ -33,7 +33,7 @@ class LeafNode(HtmlNode):
         value: str | None = None,
         props: dict[str, str] | None = None,
     ):
-        super().__init__(tag, value, props)
+        super().__init__(tag, value, props=props)
 
     def to_html(self):
         if self.value is None:
