@@ -18,7 +18,7 @@ class HtmlNode:
         props = ""
         if self.props is None:
             return props
-        for key, value in self.props:
+        for key, value in self.props.items():
             props += f" {key}={value}"
         return props
 
