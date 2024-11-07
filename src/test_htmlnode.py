@@ -29,9 +29,8 @@ class TestHtmlNode(unittest.TestCase):
                 HtmlNode(
                     "form",
                     None,
-                    children=[
-                        HtmlNode("input", None, None, {"type": "text", "id": "test"})
-                    ],
+                    children=[HtmlNode("input", None, None, None)],
+                    props={"type": "text", "id": "test"},
                 ),
                 " type=text id=test",
             ),
@@ -44,8 +43,8 @@ class TestHtmlNode(unittest.TestCase):
 
 
 class TestLeafNode(unittest.TestCase):
-        leaf_node = LeafNode("a", "take action", {"href": "not.phishing.com"})
     def test_creates_a_leaf_tag_with_props(self):
+        leaf_node = LeafNode("a", "take action", {"href": "not.phishing.com"})
         self.assertEqual(
             leaf_node.to_html(), "<a href=not.phishing.com>take action</a>"
         )
