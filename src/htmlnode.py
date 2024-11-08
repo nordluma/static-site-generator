@@ -1,9 +1,14 @@
+from typing import Union, Sequence
+
+type HtmlNodes = Sequence[Union[HtmlNode, LeafNode]] | None
+
+
 class HtmlNode:
     def __init__(
         self,
         tag: str | None = None,
         value: str | None = None,
-        children: list[object] | None = None,
+        children: HtmlNodes = None,
         props: dict[str, str] | None = None,
     ):
         self.tag = tag
@@ -47,7 +52,7 @@ class ParentNode(HtmlNode):
     def __init__(
         self,
         tag: str | None,
-        children: list[object] | None,
+        children: list[LeafNode] | None,
         props: dict[str, str] | None = None,
     ):
         super().__init__(tag, children=children, props=props)
