@@ -1,15 +1,17 @@
-from typing import Union, Sequence
+from typing import Mapping, Union, Sequence
 
 type HtmlNodes = Sequence[Union[HtmlNode, LeafNode]] | None
+
+type MaybeStr = str | None
 
 
 class HtmlNode:
     def __init__(
         self,
-        tag: str | None = None,
-        value: str | None = None,
+        tag: MaybeStr = None,
+        value: MaybeStr = None,
         children: HtmlNodes = None,
-        props: dict[str, str] | None = None,
+        props: Mapping[str, MaybeStr] | None = None,
     ):
         self.tag = tag
         self.value = value
@@ -34,13 +36,13 @@ class HtmlNode:
 class LeafNode(HtmlNode):
     def __init__(
         self,
-        tag: str | None,
-        value: str | None = None,
-        props: dict[str, str] | None = None,
+        tag: MaybeStr,
+        value: MaybeStr = None,
+        props: Mapping[str, MaybeStr] | None = None,
     ):
         super().__init__(tag, value, props=props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if self.value is None:
             raise ValueError
         if self.tag is None:
@@ -51,13 +53,13 @@ class LeafNode(HtmlNode):
 class ParentNode(HtmlNode):
     def __init__(
         self,
-        tag: str | None,
+        tag: MaybeStr,
         children: list[LeafNode] | None,
-        props: dict[str, str] | None = None,
+        props: dict[str, MaybeStr] | None = None,
     ):
         super().__init__(tag, children=children, props=props)
 
-    def to_html(self):
+    def to_html(self) -> str:
         if self.tag is None:
             raise ValueError("parent node has to have a tag")
         if self.children is None or len(self.children) == 0:
