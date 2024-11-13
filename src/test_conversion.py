@@ -1,6 +1,9 @@
 import unittest
 
-from conversion import split_nodes_delimiter
+from conversion import (
+    extract_markdown_images,
+    split_nodes_delimiter,
+)
 from textnode import TextNode, TextType
 
 
@@ -64,3 +67,22 @@ class TestSplitNodes(unittest.TestCase):
             TextNode(" word", TextType.NORMAL),
         ]
         self.assertListEqual(actual, expected)
+
+    def test_extract_markdown_images(self):
+        test_cases = [
+            ("this is markdown with an ![image](url.com)", [("image", "url.com")]),
+            (
+                "this has ![multiple](image.com) images in the ![same](sentence.fi)",
+                [("multiple", "image.com"), ("same", "sentence.fi")],
+            ),
+            ("this test has a [link](test.rs) instead of image", []),
+            (
+                "this has a [link](test.rs) first and then an ![image](picz.com)",
+                [("image", "picz.com")],
+            ),
+        ]
+
+        for text, expected in test_cases:
+            actual = extract_markdown_images(text)
+            with self.subTest(actual):
+                self.assertListEqual(actual, expected)
