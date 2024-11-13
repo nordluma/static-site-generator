@@ -63,3 +63,8 @@ def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     # images = re.findall(r"\(![.*?]\)\((.*?)\)", text)
     images = re.findall(r"\!\[(.*?)\]\((.*?)\)", text)
     return [(alt_text, url) for alt_text, url in images]
+
+
+def extract_markdown_links(text: str) -> list[tuple[str, str]]:
+    links = re.findall(r"(?<!!)\[(.*?)\]\((.*?)\)", text)
+    return [(alt_text, url) for alt_text, url in links]
