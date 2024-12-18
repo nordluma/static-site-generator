@@ -1,8 +1,7 @@
 import unittest
 
 from htmlnode import LeafNode
-from textnode import TextNode, TextType
-from conversion import text_node_to_html_node
+from textnode import TextNode, TextType, text_node_to_html_node
 
 
 class TestTextNode(unittest.TestCase):
