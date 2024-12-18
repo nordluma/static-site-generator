@@ -10,62 +10,62 @@ from textnode import TextNode, TextType
 
 class TestSplitNodes(unittest.TestCase):
     def test_split_nodes_with_code_delim(self):
-        node = TextNode("This is text with a `code block` word", TextType.NORMAL)
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
         actual = split_nodes_delimiter([node], "`", TextType.CODE)
         expected = [
-            TextNode("This is text with a ", TextType.NORMAL),
+            TextNode("This is text with a ", TextType.TEXT),
             TextNode("code block", TextType.CODE),
-            TextNode(" word", TextType.NORMAL),
+            TextNode(" word", TextType.TEXT),
         ]
         self.assertListEqual(actual, expected)
 
     def test_split_nodes_with_bold_delim(self):
-        node = TextNode("This contains a **very** important part", TextType.NORMAL)
+        node = TextNode("This contains a **very** important part", TextType.TEXT)
         actual = split_nodes_delimiter([node], "**", TextType.BOLD)
         expected = [
-            TextNode("This contains a ", TextType.NORMAL),
+            TextNode("This contains a ", TextType.TEXT),
             TextNode("very", TextType.BOLD),
-            TextNode(" important part", TextType.NORMAL),
+            TextNode(" important part", TextType.TEXT),
         ]
         self.assertListEqual(actual, expected)
 
     def test_split_nodes_with_italic_delim(self):
-        node = TextNode("This contains some *fancy* text", TextType.NORMAL)
+        node = TextNode("This contains some *fancy* text", TextType.TEXT)
         actual = split_nodes_delimiter([node], "*", TextType.ITALIC)
         expected = [
-            TextNode("This contains some ", TextType.NORMAL),
+            TextNode("This contains some ", TextType.TEXT),
             TextNode("fancy", TextType.ITALIC),
-            TextNode(" text", TextType.NORMAL),
+            TextNode(" text", TextType.TEXT),
         ]
         self.assertListEqual(actual, expected)
 
     def test_split_nodes_with_double_delims(self):
         node = TextNode(
             "This has **a very** important message **don't** forget it",
-            TextType.NORMAL,
+            TextType.TEXT,
         )
         actual = split_nodes_delimiter([node], "**", TextType.BOLD)
         expected = [
-            TextNode("This has ", TextType.NORMAL),
+            TextNode("This has ", TextType.TEXT),
             TextNode("a very", TextType.BOLD),
-            TextNode(" important message ", TextType.NORMAL),
+            TextNode(" important message ", TextType.TEXT),
             TextNode("don't", TextType.BOLD),
-            TextNode(" forget it", TextType.NORMAL),
+            TextNode(" forget it", TextType.TEXT),
         ]
         self.assertListEqual(actual, expected)
 
     def test_split_nodes_with_multi_delims(self):
         node = TextNode(
-            "This contains some *fancy* words and a `code block` word", TextType.NORMAL
+            "This contains some *fancy* words and a `code block` word", TextType.TEXT
         )
         new_nodes = split_nodes_delimiter([node], "*", TextType.ITALIC)
         actual = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
         expected = [
-            TextNode("This contains some ", TextType.NORMAL),
+            TextNode("This contains some ", TextType.TEXT),
             TextNode("fancy", TextType.ITALIC),
-            TextNode(" words and a ", TextType.NORMAL),
+            TextNode(" words and a ", TextType.TEXT),
             TextNode("code block", TextType.CODE),
-            TextNode(" word", TextType.NORMAL),
+            TextNode(" word", TextType.TEXT),
         ]
         self.assertListEqual(actual, expected)
 

@@ -29,7 +29,7 @@ def split_nodes_delimiter(
     new_nodes = []
     for old_node in old_nodes:
         # node has already a special text type, skip it
-        if old_node.text_type != TextType.NORMAL.value:
+        if old_node.text_type != TextType.TEXT:
             new_nodes.append(old_node)
             continue
 
@@ -51,7 +51,7 @@ def split_nodes_delimiter(
             # Index                                 0             1           2
             # "This is a `code block` text" -> ["This is a", "code block", "text"]
             if i % 2 == 0:
-                split_nodes.append(TextNode(sections[i], TextType.NORMAL))
+                split_nodes.append(TextNode(sections[i], TextType.TEXT))
             else:
                 split_nodes.append(TextNode(sections[i], text_type))
         new_nodes.extend(split_nodes)

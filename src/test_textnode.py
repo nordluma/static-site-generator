@@ -15,7 +15,7 @@ class TestTextNode(unittest.TestCase):
 class TestConvertTextNodeToLeafNode(unittest.TestCase):
     def test_convert_normal_to_leafnode(self):
         self.assertEqual(
-            text_node_to_html_node(TextNode("normal text", TextType.NORMAL)),
+            text_node_to_html_node(TextNode("normal text", TextType.TEXT)),
             LeafNode(None, "normal text"),
         )
 
