@@ -5,6 +5,7 @@ from conversion import (
     extract_markdown_links,
     split_nodes_delimiter,
     split_nodes_image,
+    split_nodes_link,
 )
 from textnode import TextNode, TextType
 
@@ -142,5 +143,39 @@ class TestSplitNodes(unittest.TestCase):
         ]
         for node, expected in test_cases:
             new_nodes = split_nodes_image([node])
+            with self.subTest(new_nodes):
+                self.assertListEqual(new_nodes, expected)
+
+    def test_split_link(self):
+        test_cases = [
+            (
+                TextNode(
+                    "This is a text node with an [link](https://url.com/file.jpg)",
+                    TextType.TEXT,
+                ),
+                [
+                    TextNode("This is a text node with an ", TextType.TEXT),
+                    TextNode("link", TextType.LINK, "https://url.com/file.jpg"),
+                ],
+            ),
+            (
+                TextNode("[link](test.gif)", TextType.TEXT),
+                [TextNode("link", TextType.LINK, "test.gif")],
+            ),
+            (
+                TextNode(
+                    "This has a [link](youtube.com) and [another](google.com)",
+                    TextType.TEXT,
+                ),
+                [
+                    TextNode("This has a ", TextType.TEXT),
+                    TextNode("link", TextType.LINK, "youtube.com"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("another", TextType.LINK, "google.com"),
+                ],
+            ),
+        ]
+        for node, expected in test_cases:
+            new_nodes = split_nodes_link([node])
             with self.subTest(new_nodes):
                 self.assertListEqual(new_nodes, expected)
