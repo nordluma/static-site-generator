@@ -1,11 +1,12 @@
 import unittest
 
-from conversion import (
+from markdown import (
     extract_markdown_images,
     extract_markdown_links,
     split_nodes_delimiter,
     split_nodes_image,
     split_nodes_link,
+    text_to_textnodes,
 )
 from textnode import TextNode, TextType
 
@@ -179,3 +180,49 @@ class TestSplitNodes(unittest.TestCase):
             new_nodes = split_nodes_link([node])
             with self.subTest(new_nodes):
                 self.assertListEqual(new_nodes, expected)
+
+    def test_text_to_textnode(self):
+        test_cases = [
+            (
+                "This is a **sentence** with *all* kinds of `styles` including ![images](test.jpg) and [links](test.com)",
+                [
+                    TextNode("This is a ", TextType.TEXT),
+                    TextNode("sentence", TextType.BOLD),
+                    TextNode(" with ", TextType.TEXT),
+                    TextNode("all", TextType.ITALIC),
+                    TextNode(" kinds of ", TextType.TEXT),
+                    TextNode("styles", TextType.CODE),
+                    TextNode(" including ", TextType.TEXT),
+                    TextNode("images", TextType.IMAGE, "test.jpg"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("links", TextType.LINK, "test.com"),
+                ],
+            ),
+            (
+                "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)",
+                [
+                    TextNode("This is ", TextType.TEXT),
+                    TextNode("text", TextType.BOLD),
+                    TextNode(" with an ", TextType.TEXT),
+                    TextNode("italic", TextType.ITALIC),
+                    TextNode(" word and a ", TextType.TEXT),
+                    TextNode("code block", TextType.CODE),
+                    TextNode(" and an ", TextType.TEXT),
+                    TextNode(
+                        "obi wan image",
+                        TextType.IMAGE,
+                        "https://i.imgur.com/fJRm4Vk.jpeg",
+                    ),
+                    TextNode(" and a ", TextType.TEXT),
+                    TextNode("link", TextType.LINK, "https://boot.dev"),
+                ],
+            ),
+        ]
+
+        for text, expected in test_cases:
+            nodes = text_to_textnodes(text)
+            with self.subTest(nodes):
+                self.assertListEqual(
+                    nodes,
+                    expected,
+                )
