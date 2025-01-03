@@ -1,28 +1,32 @@
-from htmlnode import LeafNode, ParentNode
-from textnode import TextType, TextNode
+import os
+import shutil
+
+PUBLIC_DIR = "./public"
+STATIC_DIR = "./static"
 
 
 def main():
-    node = TextNode("This is a text node", TextType.BOLD, "https://boot.dev")
-    print(node)
+    print("Deleting public directory...")
+    if os.path.exists(PUBLIC_DIR):
+        shutil.rmtree(PUBLIC_DIR)
 
-    parent_node = ParentNode(
-        tag="p",
-        children=[
-            LeafNode("b", "Bold text"),
-            LeafNode(None, "Normal text"),
-            LeafNode("i", "italic text"),
-            LeafNode(None, "Normal text"),
-        ],
-    )
+    print("Copying static files to public directory...")
+    copy_files(STATIC_DIR, PUBLIC_DIR)
 
-    print(parent_node.to_html())
-    print("----")
 
-    leaf_node = LeafNode(
-        tag="a", value="take action", props={"href": "not.phishing.com"}
-    )
-    print(leaf_node.props_to_html())
+def copy_files(src_dir: str, dst_dir: str):
+    if not os.path.exists(dst_dir):
+        os.mkdir(dst_dir)
+
+    for entry in os.listdir(src_dir):
+        src_path = os.path.join(src_dir, entry)
+        dst_path = os.path.join(dst_dir, entry)
+
+        print(f" * {src_path} -> {dst_path}")
+        if os.path.isfile(src_path):
+            shutil.copy(src_path, dst_path)
+        else:
+            copy_files(src_path, dst_path)
 
 
 if __name__ == "__main__":
